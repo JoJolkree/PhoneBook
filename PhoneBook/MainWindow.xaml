@@ -140,7 +140,8 @@
             x:Name="PhoneNumberTextBox"
             Grid.Row="10"
             Grid.Column="5"
-            Margin="3,3,3,0" />
+            Margin="3,3,3,0" 
+            PreviewTextInput="PhoneNumberTextBox_OnPreviewTextInput"/>
         <TextBlock
             Grid.Row="10"
             Grid.Column="6"

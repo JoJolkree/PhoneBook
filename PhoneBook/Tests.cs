@@ -51,6 +51,29 @@ namespace PhoneBook
             result = model.GetListOfPersons("Testov").ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("Testov", result[0].LastName);
+        }
+
+        [Test]
+        public void GetListOfPersonsCorrectly2()
+        {
+            var data = new List<Person>
+            {
+                new Person("Testov"),
+                new Person("Testinyan")
+            }.AsQueryable();
+
+            var mockSet = new Mock<DbSet<Person>>();
+            mockSet.As<IQueryable<Person>>().Setup(m => m.Provider).Returns(data.Provider);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.Expression).Returns(data.Expression);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.ElementType).Returns(data.ElementType);
+            mockSet.As<IQueryable<Person>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+
+            var mockContext = new Mock<PersonContext>();
+            mockContext.Setup(m => m.Persons).Returns(mockSet.Object);
+
+            var model = new Model.Model(mockContext.Object);
+            var result = model.GetListOfPersons().ToList();
+            Assert.AreEqual(2, result.Count);
 
             result = model.GetListOfPersons("äbracadabra").ToList();
             Assert.AreEqual(0, result.Count);

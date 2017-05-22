@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using PhoneBook.Model;
 using PhoneBook.Presenter;
 
@@ -107,7 +109,14 @@ namespace PhoneBook
             PhoneNumberTextBox.Text = "";
             EmailTextBox.Text = "";
             CancelButton.IsEnabled = false;
+            AddPersonButton.Content = "Add";
             _editingId = null;
+        }
+
+        private void PhoneNumberTextBox_OnPreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            var regex = new Regex("[^0-9()\\-+\\s]+");
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
